@@ -4,7 +4,9 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\DELETE_ME</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_mirrorSmudge</sprite>
     <sprite>sprites\spr_mirrorKnob</sprite>
