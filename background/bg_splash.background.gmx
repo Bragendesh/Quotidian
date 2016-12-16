@@ -11,9 +11,12 @@
   <VTile>-1</VTile>
   <TextureGroups>
     <TextureGroup0>0</TextureGroup0>
+    <TextureGroup1>0</TextureGroup1>
+    <TextureGroup2>0</TextureGroup2>
+    <TextureGroup3>0</TextureGroup3>
   </TextureGroups>
   <For3D>0</For3D>
   <width>1920</width>
   <height>1080</height>
-  <data>images\bg_bathroomForeground.png</data>
+  <data>images\bg_splash.png</data>
 </background>
