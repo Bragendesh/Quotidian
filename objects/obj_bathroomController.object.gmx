@@ -25,14 +25,23 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>defaultScale = image_xscale;
-scaleFactor = defaultScale * 1.25;
+            <string>///Setup Global Variables
+
+audio_sound_set_track_position(obj_soundController.music, 19);
+
+global.currentTask = 0;
+global.objectHeld = false;
+global.commandWrong = false;
+global.interactionDelay = 4;
+
+global.timeLimit = 600; //20 Seconds.
+alarm[0] = global.timeLimit;
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="6" enumb="11">
+    <event eventtype="2" enumb="1">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -49,14 +58,16 @@ scaleFactor = defaultScale * 1.25;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_xscale = defaultScale;
-image_yscale = defaultScale;
+            <string>global.difficulty++;
+global.dayCount++;
+obj_fade.fadeIn = false;
+obj_fade.alarm[1] = room_speed * 0.03;
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="6" enumb="10">
+    <event eventtype="2" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -73,14 +84,16 @@ image_yscale = defaultScale;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_xscale = scaleFactor;
-image_yscale = scaleFactor;
+            <string>global.winner = false;
+//obj_fade.fadeIn = false;
+//obj_fade.alarm[1] = room_speed * 0.05;
+room_goto(rm_loss);
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="6" enumb="4">
+    <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -97,8 +110,62 @@ image_yscale = scaleFactor;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_xscale = 1;
-image_yscale = 1;
+            <string>///Check Stuff.
+
+//Check Incorrect command
+if (global.commandWrong == true) {
+    var i;
+    global.currentTask = 0;
+    global.commandWrong = false;
+}
+
+//Check Goals for WIN
+if (global.currentTask &gt;= global.numberOfTasks &amp;&amp; global.winner == false) {
+    global.winner = true;
+    //Play win sound.
+    alarm[1] = room_speed * .6;
+}
+
+//Update Timer
+if (!global.winner) {
+    global.timeLimit--;
+} else {
+    alarm[0] = global.timeLimit;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>var i;
+for(i = 0; i &lt; global.numberOfTasks; i++){//creates checkboxes and checkmarks
+    global.check_boxes[i] = instance_create(25,440 + (65 * (i+1)),obj_checkBox);
+    global.check_boxes[i].image_xscale = 0.08;
+    global.check_boxes[i].image_yscale = 0.08;
+    global.check_marks[i] = instance_create(global.check_boxes[i].x+23, global.check_boxes[i].y+33, obj_checkmark);
+    global.check_marks[i].image_xscale = 0.08;
+    global.check_marks[i].image_yscale = 0.08;
+    global.check_marks[i].visible = false;
+}
+
+
 </string>
           </argument>
         </arguments>

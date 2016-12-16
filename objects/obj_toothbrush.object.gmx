@@ -3,7 +3,7 @@
   <spriteName>spr_toothbrush</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>3</depth>
   <persistent>0</persistent>
   <parentName>obj_item</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -70,7 +70,7 @@ image_speed = 0;
             <string>///Apply Paste on click
 
 paste = instance_nearest(x, y, obj_toothpaste);
-if (paste.currentState == scr_heldState &amp;&amp; mouse_check_button(mb_left)) {
+if (paste.currentState == scr_heldState &amp;&amp; mouse_check_button_pressed(mb_left)) {
     image_index = 1;
     hasPaste = true;
 }

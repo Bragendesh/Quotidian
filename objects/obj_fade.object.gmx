@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-9999</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,14 +25,17 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>defaultScale = image_xscale;
-scaleFactor = defaultScale * 1.25;
+            <string>transitioning = true;
+fadeIn = true;
+alpha = 1;
+alarm[0] = room_speed * 0.03;
+
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="6" enumb="11">
+    <event eventtype="2" enumb="1">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -49,14 +52,40 @@ scaleFactor = defaultScale * 1.25;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_xscale = defaultScale;
-image_yscale = defaultScale;
+            <string>if (fadeIn == false) {
+    if (alpha &lt; 1) {
+        transitioning = true;
+        alpha += 0.033;
+        alarm[1] = room_speed * 0.04;
+    } else {
+        transitioning = false;
+        alpha = 1;
+        if (room == rm_splash) {
+            room_goto(rm_start);
+        } else if (room == rm_start) {
+            room_goto(rm_cmdList);
+        } else if (room == rm_cmdList) {
+            room_goto(rm_bathroom);
+        } else if (room == rm_bathroom) {
+            if (global.winner == true) {
+                room_goto(rm_victory);
+            } else {
+                room_goto(rm_loss);
+            }
+        } else if (room == rm_victory) {
+            room_goto(rm_cmdList);
+        } else if (room == rm_loss) {
+            room_goto(rm_start);
+            //game_restart()...?
+        }
+    }
+}
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="6" enumb="10">
+    <event eventtype="2" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -73,14 +102,22 @@ image_yscale = defaultScale;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_xscale = scaleFactor;
-image_yscale = scaleFactor;
+            <string>if (fadeIn == true) {
+    if (alpha &gt; 0) {
+        transitioning = true;
+        alpha -= 0.033;
+        alarm[0] = room_speed * 0.04;
+    } else {
+        alpha = 0;
+        transitioning = false;
+    }
+}
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="6" enumb="4">
+    <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -97,8 +134,11 @@ image_yscale = scaleFactor;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>image_xscale = 1;
-image_yscale = 1;
+            <string>draw_set_color(c_black);
+draw_set_alpha(alpha);
+draw_rectangle(0, 0, room_width, room_height, false);
+//Set anything drawn after to draw at alpha = 1.
+draw_set_alpha(1);
 </string>
           </argument>
         </arguments>

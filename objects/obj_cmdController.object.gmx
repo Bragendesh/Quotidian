@@ -25,18 +25,41 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Generate Commands.
+            <string>//Command List for reference.
+// 0 = No Command, DO NOT GENERATE THIS.
 // 1 = Brush teeth
-// 2 = Brush hair
-// Will be added 
+// 2 = Fix hair
+// 3 = Knock on Mirror
+// 4 = Apply lipstick
+// 5 = Shave face
+// 6 = Turn sink on and off 
+// Will be added
+var numberOfCommands = 6; //Number of commands is equal to the highest command assignment.
+
+///Generate Commands.
+global.numberOfTasks = global.difficulty;
+global.winner = false;
+var hairExists = false;
+var lipstickExists = false;
+var beardExists = false;
 
 var i;
-
-for (i = 0; i &lt; 3 + global.difficulty; i++){
-   global.commandList[i] = irandom(2);
+for (i = 0; i &lt; global.numberOfTasks; i++){
+   var temp = irandom(numberOfCommands-1) + 1;
+   //Check for duplicate events that can't be duplicated.
+   while ((temp == 2 &amp;&amp; hairExists) || (temp == 4 &amp;&amp; lipstickExists) || (temp == 5 &amp;&amp; beardExists)) {
+        temp = irandom(numberOfCommands-1) + 1;
+   }
+   //Set flags.
+   if (temp == 2) {
+        hairExists = true;
+   } else if (temp == 4) {
+        lipstickExists = true;
+   } else if (temp == 5) {
+        beardExists = true;
+   }
+   global.commandList[i] = temp;
 }
-global.numberOfGoals = 3 + global.difficulty;
-
 </string>
           </argument>
         </arguments>
@@ -59,18 +82,41 @@ global.numberOfGoals = 3 + global.difficulty;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_set_color(c_black);
+            <string>///Draw the tasks to the screen.
+    
+col = make_colour_rgb(64, 117, 190);
+draw_set_color(col);
+draw_set_font(fnt_poppins);
+draw_set_halign(fa_center);
+draw_text(960, 75, "For me to have the most perfect day, I must...");
 draw_set_font(fnt_default);
+draw_set_color(c_white);
+
 var i;
-for (i = 0; i &lt; 3 + global.difficulty; i++){
-   
+var xoffset = 960;
+var yoffset = 65;
+for (i = 0; i &lt; global.numberOfTasks; i++){
    if(global.commandList[i] == 1){
-      draw_text(500, 100 * (i+1), string((i+1))+ ": Brush Your Teeth!");  
-   }
-   else if(global.commandList[i] == 2){
-      draw_text(500, 100 * (i+1), string((i+1)) + ": Brush Your Hair!");
+      draw_text(xoffset, 110 + yoffset * (i+1), string((i+1))+ ": Brush my Teeth!");  
+   } else if(global.commandList[i] == 2){
+      draw_text(xoffset, 110 + yoffset * (i+1), string((i+1)) + ": Fix my Hair!");
+   } else if(global.commandList[i] == 3){
+      draw_text(xoffset, 110 + yoffset * (i+1), string((i+1)) + ": Knock on the Mirror!");
+   } else if(global.commandList[i] == 4){
+      draw_text(xoffset, 110 + yoffset * (i+1), string((i+1)) + ": Apply my Lipstick!");
+   } else if(global.commandList[i] == 5){
+      draw_text(xoffset, 110 + yoffset * (i+1), string((i+1)) + ": Shave my Face!");
+   } else if(global.commandList[i] == 6){
+      draw_text(xoffset, 110 + yoffset  * (i+1), string((i+1)) + ": Turn the Sink On and Off!");
    }
 }
+
+//Draw the day count to the screen.
+draw_set_color(col);
+draw_set_font(fnt_endScreen);
+draw_set_halign(fa_left);
+draw_text(1400, 850, "Day: " + string(global.dayCount));
+
 </string>
           </argument>
         </arguments>

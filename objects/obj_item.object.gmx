@@ -27,6 +27,8 @@
             <kind>1</kind>
             <string>///Initialize Variables
 
+rotation = 15;
+
 restingX = x;
 restingY = y;
 
@@ -57,17 +59,10 @@ stateCanChange = true;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Can Change State Again
-
-if (currentState == scr_heldState) {
-        currentState = scr_restingState;
-        global.objectHeld = false;
-} else if (currentState == scr_restingState &amp;&amp; global.objectHeld == false) {
-    currentState = scr_heldState;
-    global.objectHeld = true;
-}
+            <string>///Process State Change
 
 stateCanChange = true;
+script_execute(scr_changeObjectState);
 </string>
           </argument>
         </arguments>
@@ -90,7 +85,14 @@ stateCanChange = true;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Execute State
+            <string>///Execute Current State
+
+if(currentState == scr_heldState){
+    image_angle = rotation;
+}
+else{
+    image_angle = 0;
+}
 
 script_execute(currentState);
 
@@ -101,7 +103,7 @@ y = newY;
         </arguments>
       </action>
     </event>
-    <event eventtype="6" enumb="0">
+    <event eventtype="6" enumb="4">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -118,13 +120,10 @@ y = newY;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Attempt to Change State
+            <string>///Lock state until after Alarm0
 
-if (stateCanChange) {
-    stateCanChange = false;
-    alarm_set(0, global.interactionDelay);
-}
-
+stateCanChange = false;
+alarm_set(0, global.interactionDelay);
 </string>
           </argument>
         </arguments>
